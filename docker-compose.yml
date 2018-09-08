@@ -10,6 +10,7 @@ services:
       - ./backend/app:/opt/app
     environment:
       - FLASK_DEBUG=1
+      - FLASK_APP=main.py
   database:
     image: mysql:8.0
     environment:
