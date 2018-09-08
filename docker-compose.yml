@@ -6,6 +6,10 @@ services:
       context: ./backend
     ports:
       - 80:8000
+    volumes:
+      - ./backend/app:/opt/app
+    environment:
+      - FLASK_DEBUG=1
   database:
     image: mysql:8.0
     environment:
