@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -7,12 +8,13 @@ from datetime import datetime
 
 
 db = SQLAlchemy()
+ma = Marshmallow()
 
 
 class User(db.Model):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String(60), nullable=False)
+    username = Column(String(60), nullable=False, unique=True)
     _password = Column('password', String(160), nullable=False)
     diary_entries = relationship('DiaryEntry', backref='user')
 
@@ -37,5 +39,12 @@ class DiaryEntry(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'))
 
 
+class UserSchema(ma.ModelSchema):
+    class Meta:
+        fields = ('id', 'username')
 
+
+class DiaryEntrySchema(ma.ModelSchema):
+    class Meta:
+        model = DiaryEntry
 
