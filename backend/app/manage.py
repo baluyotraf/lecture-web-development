@@ -24,5 +24,14 @@ def create_db():
     print('Database tables successfully created')
 
 
+@web_cli.command()
+def drop_db():
+    """
+    Drops all database tables
+    """
+    db.drop_all()
+    print('Database tables successfully dropped')
+
+
 if __name__ == '__main__':
     web_cli()
