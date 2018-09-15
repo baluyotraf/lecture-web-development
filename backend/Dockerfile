@@ -9,5 +9,5 @@ RUN pip install -r /opt/python/requirements.txt \
 EXPOSE 8000
 
 WORKDIR /opt/app
-CMD flask run -h 0.0.0.0 -p 8000
+CMD python manage.py run -h 0.0.0.0 -p 8000
 
