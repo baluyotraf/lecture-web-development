@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, url_for
+from flask import Blueprint
 
 
 blueprint = Blueprint('index', __name__, url_prefix='/')
