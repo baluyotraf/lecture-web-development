@@ -7,7 +7,7 @@ from . import blueprints
 
 
 def create_application(with_blueprints=True):
-    application = Flask(__name__)
+    application = Flask(__name__, static_folder=None)
     application.config.from_object(DefaultConfig())
     db.init_app(application)
     ma.init_app(application)
