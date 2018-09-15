@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, url_for
 from ..models import db, User, UserSchema
 from ..auth import requires_user, failed_auth_response
 
@@ -8,7 +8,7 @@ schema = UserSchema()
 _create_user_fields = ['username', 'password']
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.route('', methods=['POST'])
 def create_users():
     user_details = request.get_json()
     user = User(**{field: user_details[field]
@@ -16,7 +16,7 @@ def create_users():
     db.session.add(user)
     db.session.commit()
     user_json = schema.dump(user).data
-    return jsonify(user_json), 201, {'Location': 'wew'}
+    return jsonify(user_json), 201, {'Location': url_for('.view_user', id_=user.id)}
 
 
 @blueprint.route('/<int:id_>', methods=['GET'])
