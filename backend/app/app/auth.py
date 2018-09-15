@@ -23,14 +23,16 @@ def get_user_from_credentials(username, password):
 
 def create_serializer():
     secret_key = current_app.config['ITSDANGEROUS_SECRET_KEY']
-    token_serializer = TimedJSONWebSignatureSerializer(secret_key)
+    expires_in = current_app.config['ITSDANGEROUS_EXPIRY_SECS']
+    token_serializer = TimedJSONWebSignatureSerializer(secret_key, expires_in)
     return token_serializer
 
 
 def get_user_from_token(token):
     try:
+        bytes_token = token.encode(_ENCODING)
         serializer = create_serializer()
-        user_id = serializer.loads(token)['id']
+        user_id = serializer.loads(bytes_token)['id']
         user = User.query.filter_by(id=user_id).first()
         return user
     except (BadSignature, SignatureExpired, KeyError):
@@ -54,12 +56,12 @@ def generate_token(user):
     return bytes_token.decode(_ENCODING)
 
 
-def requires_user(func):
-    @wraps(func)
+def requires_user(f):
+    @wraps(f)
     def decorated(*args, **kwargs):
         user = get_user()
         if user:
-            return func(user, *args, **kwargs)
+            return f(user, *args, **kwargs)
         else:
             return failed_auth_response()
     return decorated
