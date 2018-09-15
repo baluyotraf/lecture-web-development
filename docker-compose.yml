@@ -10,9 +10,10 @@ services:
       - ./backend/app:/opt/app
     environment:
       - FLASK_DEBUG=1
-      - FLASK_APP=main.py
+    depends_on:
+      - database
   database:
-    image: mysql:8.0
+    image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=db
