@@ -46,5 +46,4 @@ class UserSchema(ma.ModelSchema):
 
 class DiaryEntrySchema(ma.ModelSchema):
     class Meta:
-        model = DiaryEntry
-
+        fields = ('id', 'date', 'title', 'body')
