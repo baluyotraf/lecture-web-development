@@ -6,7 +6,9 @@ from functools import wraps
 
 blueprint = Blueprint('diary_entries', __name__, url_prefix='/diary_entries')
 schema = DiaryEntrySchema()
+schema_many = DiaryEntrySchema(many=True)
 _diary_entry_fields = ['title', 'body']
+_items_per_page = 10
 
 
 def _jsonify_diary(model):
@@ -35,8 +37,33 @@ def create_diary_entry(user):
                                 for field in _diary_entry_fields})
     db.session.add(diary_entry)
     db.session.commit()
-    location = url_for('.view_diary_entry', id_=diary_entry.id)
+    location = url_for('.view_diary_entry', id_=diary_entry.id, _external=True)
+    print(location)
     return _jsonify_diary(diary_entry), 201, {'Location': location}
+
+
+@blueprint.route('', methods=['GET'])
+@requires_user
+def view_diary_entries(user):
+    page = int(request.args.get('page', 1))
+    paged_data = DiaryEntry.query\
+                           .filter_by(user_id=user.id)\
+                           .order_by(DiaryEntry.date.desc())\
+                           .paginate(page, _items_per_page)
+    response = {
+        'next': (url_for('.view_diary_entries', page=page+1, _external=True)
+                 if paged_data.has_next else None),
+        'previous': (url_for('.view_diary_entries', page=page-1, _external=True)
+                     if paged_data.has_prev else None),
+        'pages': paged_data.pages,
+        'items': ([] if paged_data.items is None
+                  else schema_many.dump(paged_data.items).data),
+        'links': ([] if paged_data.items is None
+                  else [url_for('.view_diary_entry', id_=item.id, _external=True)
+                        for item in paged_data.items]),
+    }
+    print(response)
+    return jsonify(response), 201
 
 
 @blueprint.route('/<int:id_>', methods=['GET'])
