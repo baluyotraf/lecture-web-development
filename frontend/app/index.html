@@ -2,11 +2,24 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Page Title</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
+    <title>Diary</title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    
+    <div id="login">
+        <div>
+            <span>Username: </span>
+            <input type="text" v-model="username"/>
+        </div>
+        <div>
+            <span>Password:</span>
+            <input type="password" v-model="password"/>
+        </div>
+        <input type="button" value="Log In" v-on:click="logIn()"/>
+    </div>
+
+    <script src="scripts/index.js"></script>
 </body>
 </html>
