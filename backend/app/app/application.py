@@ -4,11 +4,15 @@ from flask import Flask
 from .config import DefaultConfig
 from .models import db, ma
 from . import blueprints
+from flask_reverse_proxy import FlaskReverseProxied
+
+proxy = FlaskReverseProxied()
 
 
 def create_application(with_blueprints=True):
     application = Flask(__name__, static_folder=None)
     application.config.from_object(DefaultConfig())
+    proxy.init_app(application)
     db.init_app(application)
     ma.init_app(application)
     if with_blueprints:
