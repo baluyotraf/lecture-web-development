@@ -4,18 +4,29 @@ services:
   backend:
     build:
       context: ./backend
-    ports:
-      - 80:8000
-    volumes:
-      - ./backend/app:/opt/app
-    environment:
-      - FLASK_DEBUG=1
     depends_on:
       - database
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+  proxy:
+    build:
+      context: ./proxy
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+      - frontend
   database:
     image: mysql:5.7
+    volumes:
+      - db_volume:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=db
       - MYSQL_USER=user
       - MYSQL_PASSWORD=user
+volumes:
+  db_volume:
