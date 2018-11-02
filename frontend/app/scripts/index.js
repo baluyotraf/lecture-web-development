@@ -3,6 +3,7 @@ new Vue({
     data: {
         username: null,
         password: null,
+        message: null,
     },
     mounted: function() {
         token = localStorage.getItem('token')
@@ -29,5 +30,19 @@ new Vue({
                 localStorage.clear()
             });
         },
+        signUp: function() {
+            axios({
+                method: 'post',
+                url: '/api/users',
+                data: {
+                    username: this.username,
+                    password: this.password,
+                }
+            })
+            .then((response) => {
+                this.message = `Account ${this.username} created`;
+            })
+            .catch((response) => {})
+        }
     },
 })
