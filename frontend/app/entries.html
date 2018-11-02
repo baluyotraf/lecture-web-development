@@ -14,12 +14,17 @@
             <input type="button" value="Log Out" v-on:click="logOut"/>
         </div>
         <div>
+            <input type="button" value="Create" v-on:click="createEntry"/>
+        </div>
+        <div>
             <div v-for="diary in diaries">
-                <h1>{{diary.title}}</h1>
-                <h2>Written on: {{diary.date}}</h2>
-                <p>
-                    {{diary.body}}
-                </p>
+                <a v-bind:href="`/entry.html?id=${diary.id}`">
+                    <h1>{{diary.title}}</h1>
+                    <h2>Written on: {{diary.date}}</h2>
+                    <p>
+                        {{diary.body}}
+                    </p>
+                </a>
             </div>
         </div>
         <input type="button" value="previous" v-if="hasPrevious" v-on:click="movePage(-1)"/>

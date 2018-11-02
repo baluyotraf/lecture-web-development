@@ -29,7 +29,7 @@ new Vue({
 
             query = new URLSearchParams(window.location.search);
             this.id = parseInt(query.get('id'));
-            this.exists = this.id !== NaN;
+            this.exists = !isNaN(this.id);
             if (this.exists) {
                 axios({
                     method: 'get',
@@ -41,9 +41,7 @@ new Vue({
                 .then((response) => {
                     this.diary = response.data;
                 })
-                .catch((response) => {
-
-                })
+                .catch((response) => {})
             }
         }
     },
@@ -53,6 +51,7 @@ new Vue({
             window.location.href='/index.html';
         },
         deleteEntry: function() {
+            token = localStorage.getItem('token')
             if (this.exists){
                 axios({
                     method: 'delete',
@@ -64,10 +63,11 @@ new Vue({
                 .then((response) => {
                     window.location.href = '/entries.html'
                 })
-                .catch((response) => {
-
-                });
+                .catch((response) => {});
             }
-        }
+        },
+        editEntry: function() {
+            window.location.href=`/editor.html?id=${this.id}`;
+        },
     },
 })

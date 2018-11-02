@@ -19,7 +19,7 @@
             <p>
                 {{diary.body}}
             </p>
-            <input type="button" value="Edit" v-if="exists"/>
+            <input type="button" value="Edit" v-if="exists" v-on:click="editEntry"/>
             <input type="button" value="Delete" v-if="exists" v-on:click="deleteEntry"/>
         </div>
     </div>

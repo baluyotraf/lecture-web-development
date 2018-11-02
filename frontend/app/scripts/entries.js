@@ -58,7 +58,10 @@ new Vue({
         },
         movePage: function(pageMove) {
             newPage = this.page + pageMove;
-            window.location.href =`/entries.html?page=${newPage}`;
+            window.location.href = `/entries.html?page=${newPage}`;
+        },
+        createEntry: function() {
+            window.location.href = '/editor.html';
         }
     },
 })
