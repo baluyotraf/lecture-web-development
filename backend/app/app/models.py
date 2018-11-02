@@ -35,7 +35,7 @@ class DiaryEntry(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String(80), nullable=False)
     body = Column(Text, nullable=False)
-    date = Column(DateTime, nullable=False, default=datetime.utcnow())
+    date = Column(DateTime, nullable=False, default=datetime.utcnow)
     user_id = Column(Integer, ForeignKey('user.id'))
 
 
