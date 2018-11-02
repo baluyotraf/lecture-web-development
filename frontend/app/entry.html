@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Entries</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="entries">
+        <div>
+            <span>User: {{user.username}}</span>
+            <input type="button" value="Log Out" v-on:click="logOut"/>
+        </div>
+        <div>
+            <h1>{{diary.title}}</h1>
+            <h2>Written on: {{diary.date}}</h2>
+            <p>
+                {{diary.body}}
+            </p>
+            <input type="button" value="Edit" v-if="exists"/>
+            <input type="button" value="Delete" v-if="exists" v-on:click="deleteEntry"/>
+        </div>
+    </div>
+    <script src="scripts/entry.js"></script>
+</body>
+</html>
