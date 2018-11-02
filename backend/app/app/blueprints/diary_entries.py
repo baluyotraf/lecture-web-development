@@ -48,7 +48,7 @@ def view_diary_entries(user):
     page = int(request.args.get('page', 1))
     paged_data = DiaryEntry.query\
                            .filter_by(user_id=user.id)\
-                           .order_by(DiaryEntry.date.desc())\
+                           .order_by(DiaryEntry.date.desc(), DiaryEntry.id.desc())\
                            .paginate(page, _items_per_page)
     response = {
         'next': (url_for('.view_diary_entries', page=page+1, _external=True)
@@ -63,7 +63,7 @@ def view_diary_entries(user):
                         for item in paged_data.items]),
     }
     print(response)
-    return jsonify(response), 201
+    return jsonify(response), 200
 
 
 @blueprint.route('/<int:id_>', methods=['GET'])
