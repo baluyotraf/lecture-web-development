@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, url_for
 from ..models import db, DiaryEntry, DiaryEntrySchema
 from ..auth import requires_user, failed_auth_response
 from functools import wraps
+from datetime import datetime
 
 
 blueprint = Blueprint('diary_entries', __name__, url_prefix='/diary_entries')
@@ -84,6 +85,7 @@ def edit_diary_entry(diary_entry):
         except KeyError:
             continue
         setattr(diary_entry, field, value)
+    diary_entry.date = datetime.utcnow()
     db.session.commit()
     return _jsonify_diary(diary_entry), 200
 
