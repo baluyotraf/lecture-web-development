@@ -1,3 +1,3 @@
-FROM library/nginx:1.15
+FROM library/nginx:1.23
 COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["nginx", "-g", "daemon off;"]

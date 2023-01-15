@@ -1,12 +1,11 @@
 from flask import current_app, request, jsonify
 from functools import wraps
-from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
+from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from . models import User
 
 
 _AUTHORIZATION_KEY = 'Authorization'
 _FAILED_AUTH_MSG = {'message': 'Access Denied'}
-_ENCODING = 'utf-8'
 
 
 def failed_auth_response():
@@ -23,20 +22,21 @@ def get_user_from_credentials(username, password):
 
 def create_serializer():
     secret_key = current_app.config['ITSDANGEROUS_SECRET_KEY']
-    expires_in = current_app.config['ITSDANGEROUS_EXPIRY_SECS']
-    token_serializer = TimedJSONWebSignatureSerializer(secret_key, expires_in)
+    token_serializer = URLSafeTimedSerializer(secret_key)
     return token_serializer
 
 
 def get_user_from_token(token):
+    max_age = current_app.config['ITSDANGEROUS_EXPIRY_SECS']
+    serializer = create_serializer()
+
     try:
-        bytes_token = token.encode(_ENCODING)
-        serializer = create_serializer()
-        user_id = serializer.loads(bytes_token)['id']
-        user = User.query.filter_by(id=user_id).first()
-        return user
+        user_id = serializer.loads(token, max_age=max_age)['id']
+
     except (BadSignature, SignatureExpired, KeyError):
         return None
+
+    return User.query.filter_by(id=user_id).first()
 
 
 def get_user():
@@ -52,8 +52,7 @@ def get_user():
 
 def generate_token(user):
     serializer = create_serializer()
-    bytes_token = serializer.dumps({'id': user.id})
-    return bytes_token.decode(_ENCODING)
+    return serializer.dumps({'id': user.id})
 
 
 def requires_user(f):

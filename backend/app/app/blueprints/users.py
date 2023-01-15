@@ -9,7 +9,7 @@ _create_user_fields = ['username', 'password']
 
 
 def _jsonify_user(model):
-    user_dict = schema.dump(model).data
+    user_dict = schema.dump(model)
     return jsonify(user_dict)
 
 
@@ -38,4 +38,3 @@ def view_user(user, id_):
 @requires_user
 def view_self(user):
     return _jsonify_user(user), 200
-

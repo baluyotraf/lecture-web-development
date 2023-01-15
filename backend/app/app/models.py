@@ -39,11 +39,11 @@ class DiaryEntry(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'))
 
 
-class UserSchema(ma.ModelSchema):
+class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id', 'username')
 
 
-class DiaryEntrySchema(ma.ModelSchema):
+class DiaryEntrySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id', 'date', 'title', 'body')

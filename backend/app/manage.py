@@ -3,7 +3,7 @@ from flask.cli import FlaskGroup
 from app.models import db
 
 
-def create_web_app(info):
+def create_web_app():
     from app.application import create_application
     return create_application()
 

@@ -1,2 +1,2 @@
-FROM nginx:1.15
+FROM nginx:1.23
 COPY app /usr/share/nginx/html

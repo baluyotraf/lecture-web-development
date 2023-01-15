@@ -13,7 +13,7 @@ _items_per_page = 10
 
 
 def _jsonify_diary(model):
-    diary_dict = schema.dump(model).data
+    diary_dict = schema.dump(model)
     return jsonify(diary_dict)
 
 
@@ -50,7 +50,7 @@ def view_diary_entries(user):
     paged_data = DiaryEntry.query\
                            .filter_by(user_id=user.id)\
                            .order_by(DiaryEntry.date.desc(), DiaryEntry.id.desc())\
-                           .paginate(page, _items_per_page)
+                           .paginate(page=page, per_page=_items_per_page)
     response = {
         'next': (url_for('.view_diary_entries', page=page+1, _external=True)
                  if paged_data.has_next else None),
@@ -58,7 +58,7 @@ def view_diary_entries(user):
                      if paged_data.has_prev else None),
         'pages': paged_data.pages,
         'items': ([] if paged_data.items is None
-                  else schema_many.dump(paged_data.items).data),
+                  else schema_many.dump(paged_data.items)),
         'links': ([] if paged_data.items is None
                   else [url_for('.view_diary_entry', id_=item.id, _external=True)
                         for item in paged_data.items]),
@@ -97,7 +97,3 @@ def delete_diary_entry(diary_entry):
     db.session.delete(diary_entry)
     db.session.commit()
     return jsonify({}), 204
-
-
-
-
