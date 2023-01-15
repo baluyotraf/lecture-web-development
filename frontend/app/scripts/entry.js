@@ -22,7 +22,7 @@ new Vue({
                 },
             })
             .then((response) => {
-                this.user = response.data;                
+                this.user = response.data;
             })
             .catch((response) => {
             })
@@ -49,6 +49,9 @@ new Vue({
         logOut: function() {
             localStorage.clear();
             window.location.href='/index.html';
+        },
+        goToEntries: function() {
+            window.location.href='/entries.html';
         },
         deleteEntry: function() {
             token = localStorage.getItem('token')
