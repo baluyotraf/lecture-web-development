@@ -19,7 +19,7 @@
         </div>
         <input type="button" value="Log In" v-on:click="logIn"/>
         <input type="button" value="Sign Up" v-on:click="signUp"/>
-        <span v-if="message">{{message}}</span>
+        <span v-if="message !== null">{{message}}</span>
     </div>
 
     <script src="scripts/index.js"></script>

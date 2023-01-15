@@ -28,6 +28,7 @@ new Vue({
             })
             .catch((response) => {
                 localStorage.clear()
+                this.message = `Login failed`
             });
         },
         signUp: function() {
@@ -42,7 +43,9 @@ new Vue({
             .then((response) => {
                 this.message = `Account ${this.username} created`;
             })
-            .catch((response) => {})
+            .catch((response) => {
+                this.message = `Account creation failed`
+            })
         }
     },
 })
